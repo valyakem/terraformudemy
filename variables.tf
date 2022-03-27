@@ -10,8 +10,8 @@ variable "region" {
   default                       = "us-east-1" 
 }
 
-variable "azs" {
-  description                   = "enter the availability zones"
-  type                          = list(string) 
-  default = [ "us-east-1a", "us-east-1b", "us-east-1c" ]
-}       
+# variable "azs" {
+#   description                   = "enter the availability zones"
+#   type                          = list(string) 
+#   default = [ "us-east-1a", "us-east-1b", "us-east-1c" ]
+# }       
