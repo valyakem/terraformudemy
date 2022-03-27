@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_vpc" "main" {
-    cidr_block "10.0.0.0/16"
+    cidr_block          = "10.0.0.0/16"
 }
 
 module "nb_webserver" {
@@ -13,5 +13,4 @@ module "nb_webserver" {
     cidr_block          = "10.0.0.0/16"
     webserver_name      = "nb_webserver"
     ami                 = "ami-04505e74c0741db8d"
-
 }
