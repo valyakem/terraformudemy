@@ -1,5 +1,5 @@
 resource "aws_vpc" "nbvpc" {
-    cidr_block          = "var.vpc_cidr"
+    cidr_block          = "${var.vpc_cidr}"
     instance_tenancy    = "default"
 
     tags = {
