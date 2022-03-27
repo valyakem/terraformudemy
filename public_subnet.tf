@@ -2,6 +2,7 @@ locals {
   azs_names        = "${data.aws_availability_zones.azs.names[0]}"
 } 
 
+//Create your public subnet
 resource "aws_subnet" "nb_publicsubnet" {
   count             = "${length(local.azs_names[0])}"
   vpc_id            = aws_vpc.nbvpc.id
