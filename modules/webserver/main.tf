@@ -3,8 +3,8 @@ terraform {
 }
 
 resource "aws_subnet" "webserver" {
-  vpc_id = aws_vpc.vpc.main.id
-  cidr_block = aws_vpc.main.cidr_block
+  vpc_id = var.vpc_id
+  cidr_block = var.cidr_block
 }
 
 resource "aws_instance" "webserver" {
