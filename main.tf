@@ -1,12 +1,24 @@
-resource "aws_vpc" "main" {
-    cidr_block          = "10.0.0.0/16"
+locals {
+    az_names           = "${data.aws_availability_zones.azs.names}"
 }
 
-module "nb_webserver" {
-    source              = "./modules/webserver"
-    
-    vpc_id              = aws_vpc.main.id
+resource "aws_vpc" "nbvpc" {
     cidr_block          = "10.0.0.0/16"
-    webserver_name      = "nb_webserver"
-    ami                 = "ami-04505e74c0741db8d"
+    instance_tenancy    = "default"
+
+    tags = {
+        Name            = "nb_vpc"
+        Environment     = "Testing"
+    }
+}
+
+module "pub_subnets" {
+source                  = "./modules/public_subnet"
+vpc_id                  = "${aws_vpc.nbvpc.id}"
+cidr_block              = "${cidrsubnet(var.vpc_cidr, 8, count.index)}"
+aws_availability_zone   = "${local.az_names[count.index]}"
+
+tags = {
+    Name    = "PublicSubnet-${count.index + 1}"
+}
 }
