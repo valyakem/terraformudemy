@@ -1,11 +1,11 @@
 
 //Create your public subnet
 resource "aws_subnet" "nb_publicsubnet" {
-  count             = "${length(local.azs_names)}"
-  vpc_id            = "${aws_vpc.nbvpc.id}"
-  cidr_block        = "${cidrsubnet(var.vpc_cidr, 8, count.index + length(local.azs_names))}" 
-  //note + length is to have the numbering start from the last cidr
-  availability_zone = "${local.azs_names[count.index]}"
+  count                   = "${length(local.azs_names)}"
+  vpc_id                  = "${aws_vpc.nbvpc.id}"
+  cidr_block              = "${cidrsubnet(var.vpc_cidr, 8, count.index)}" 
+  availability_zone       = "${local.azs_names[count.index]}"
+  map_public_ip_on_launch = true
 
   tags = {
     Name = "NB-PublicSubnet-${count.index + 1}"
