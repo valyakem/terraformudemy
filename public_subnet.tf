@@ -3,7 +3,8 @@
 resource "aws_subnet" "nb_publicsubnet" {
   count             = "${length(local.azs_names)}"
   vpc_id            = "${aws_vpc.nbvpc.id}"
-  cidr_block        = "${cidrsubnet(var.vpc_cidr, 8, 1)}"
+  cidr_block        = "${cidrsubnet(var.vpc_cidr, 8, count.index + length(local.azs_names))}" 
+  //note + length is to have the numbering start from the last cidr
   availability_zone = "${local.azs_names[count.index]}"
 
   tags = {
@@ -39,6 +40,8 @@ resource "aws_route_table" "pubrt" {
   }
 }
 
+
+//create a network association to associate the route table with the public subnet from all regions
 resource "aws_route_table_association" "pubsubassoc" {
   count           = "${length(local.azs_names)}"
   subnet_id       = "${local.pubsubid[count.index]}" //returns list of subnet ids using count.index
