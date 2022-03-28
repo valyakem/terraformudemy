@@ -40,7 +40,7 @@ resource "aws_route_table" "pubrt" {
 }
 
 resource "aws_route_table_association" "pubsubassoc" {
-  count           = "${length(local.az_names)}"
+  count           = "${length(local.azs_names)}"
   subnet_id       = "${local.pubsubid[count.index]}" //returns list of subnet ids using count.index
   route_table_id  = "${aws_route_table.pubrt.id}"
 }
