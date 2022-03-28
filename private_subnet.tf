@@ -18,7 +18,7 @@ resource "aws_instance" "natinst" {
   instance_type                 = "t2.micro"
   subnet_id                     = "${local.pubsubid[0]}"
   source_dest_check             = false
-  security_group_id             = "${aws_security_group.nat_sg.id}"
+  vpc_security_group_ids             = "${aws_security_group.nat_sg.id}"
   //associate_public_ip_address   = true
 
   tags = {
