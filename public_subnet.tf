@@ -10,3 +10,37 @@ resource "aws_subnet" "nb_publicsubnet" {
     Name = "NB-PublicSubnet-${count.index + 1}"
   }
 }
+
+
+//create internet gateway
+resource "aws_internet_gateway" "igw" {
+  vpc_id = "${aws_vpc.nbvpc.id}"
+
+  tags = {
+    Name = "NB-IGW"
+  }
+}
+
+//Internet route table
+resource "aws_route_table" "pubrt" {
+  vpc_id = "${aws_vpc.nbvpc.id}"
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = "${aws_internet_gateway.igw.id}"
+  }
+
+  # route {
+  #   ipv6_cidr_block        = "::/0"
+  #   egress_only_gateway_id = aws_egress_only_internet_gateway.example.id
+  # }
+  tags = {
+    Name = "nb-rt"
+  }
+}
+
+resource "aws_route_table_association" "pubsubassoc" {
+  count           = "${length(local.az.names)}"
+  subnet_id       = "${local.pubsubid[count.index]}" //returns list of subnet ids using count.index
+  route_table_id  = "${aws_route_table.pubrt.id}"
+}
