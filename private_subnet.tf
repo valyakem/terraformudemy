@@ -62,3 +62,4 @@ resource "aws_security_group" "nat_sg" {
       cidr_blocks =  ["0.0.0.0/0"]
       prefix_list_ids = ["pl-12c4e678"]
   }
+}
