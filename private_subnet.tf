@@ -18,6 +18,7 @@ resource "aws_instance" "natinst" {
   instance_type                 = "t2.micro"
   subnet_id                     = "${local.pubsubid[0]}"
   source_dest_check             = false
+  security_group_id             = "${aws_security_group.nat_sg.id}"
   //associate_public_ip_address   = true
 
   tags = {
@@ -47,3 +48,17 @@ resource "aws_route_table_association" "priv_rt_assoc" {
   subnet_id                     = "${local.privsubid[count.index]}" 
   route_table_id                = "${aws_route_table.privrt.id}" 
 }
+
+//NAT Instance Security Group
+resource "aws_security_group" "nat_sg" {
+  name                          = "NAT SG"
+  description                   = "Allow traffic for private subnets"
+  vpc_id                        = "${aws_vpc.nbvpc.id}"
+
+  egress {
+      from_port = 0
+      to_port   = 0
+      protocol  = "-1"
+      cidr_blocks =  ["0.0.0.0/0"]
+      prefix_list_ids = ["pl-12c4e678"]
+  }
